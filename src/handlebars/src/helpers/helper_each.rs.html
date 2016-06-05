@@ -263,6 +263,18 @@
 <span id="219">219</span>
 <span id="220">220</span>
 <span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
 </pre><pre class='rust '>
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>serialize</span>::<span class='ident'>json</span>::{<span class='ident'>Json</span>, <span class='ident'>ToJson</span>};
@@ -286,7 +298,7 @@
             <span class='ident'>r</span>: <span class='kw-2'>&amp;</span><span class='ident'>Registry</span>,
             <span class='ident'>rc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>RenderContext</span>)
             <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>RenderError</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>param</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>param</span>(<span class='number'>0</span>)
+        <span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>param</span>(<span class='number'>0</span>)
                           .<span class='ident'>ok_or_else</span>(<span class='op'>||</span> <span class='ident'>RenderError</span>::<span class='ident'>new</span>(<span class='string'>&quot;Param not found for helper \&quot;each\&quot;&quot;</span>)));
 
         <span class='kw'>let</span> <span class='ident'>template</span> <span class='op'>=</span> <span class='ident'>h</span>.<span class='ident'>template</span>();
@@ -294,27 +306,30 @@
         <span class='kw'>match</span> <span class='ident'>template</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>t</span>) <span class='op'>=&gt;</span> {
                 <span class='kw'>let</span> <span class='ident'>path</span> <span class='op'>=</span> <span class='ident'>rc</span>.<span class='ident'>get_path</span>().<span class='ident'>clone</span>();
-                <span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>c</span>.<span class='ident'>navigate</span>(<span class='kw-2'>&amp;</span><span class='ident'>path</span>, <span class='ident'>param</span>);
 
                 <span class='ident'>rc</span>.<span class='ident'>promote_local_vars</span>();
 
-                <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>value</span>);
-                <span class='kw'>let</span> <span class='ident'>rendered</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='op'>*</span><span class='ident'>value</span> {
-                    <span class='ident'>Json</span>::<span class='ident'>Array</span>(<span class='kw-2'>ref</span> <span class='ident'>list</span>) <span class='op'>=&gt;</span> {
+                <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>value</span>.<span class='ident'>value</span>());
+                <span class='kw'>let</span> <span class='ident'>rendered</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>value</span>.<span class='ident'>value</span>() {
+                    <span class='kw-2'>&amp;</span><span class='ident'>Json</span>::<span class='ident'>Array</span>(<span class='kw-2'>ref</span> <span class='ident'>list</span>) <span class='op'>=&gt;</span> {
                         <span class='kw'>let</span> <span class='ident'>len</span> <span class='op'>=</span> <span class='ident'>list</span>.<span class='ident'>len</span>();
                         <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='number'>0</span>..<span class='ident'>len</span> {
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@first&quot;</span>.<span class='ident'>to_string</span>(), (<span class='ident'>i</span> <span class='op'>==</span> <span class='number'>0usize</span>).<span class='ident'>to_json</span>());
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@last&quot;</span>.<span class='ident'>to_string</span>(), (<span class='ident'>i</span> <span class='op'>==</span> <span class='ident'>len</span> <span class='op'>-</span> <span class='number'>1</span>).<span class='ident'>to_json</span>());
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@index&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>i</span>.<span class='ident'>to_json</span>());
 
-                            <span class='kw'>let</span> <span class='ident'>new_path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.[{}]&quot;</span>, <span class='ident'>path</span>, <span class='ident'>param</span>, <span class='ident'>i</span>);
-                            <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>new_path</span>);
-                            <span class='ident'>rc</span>.<span class='ident'>set_path</span>(<span class='ident'>new_path</span>);
+                            <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>inner_path</span>) <span class='op'>=</span> <span class='ident'>value</span>.<span class='ident'>path</span>() {
+                                <span class='kw'>let</span> <span class='ident'>new_path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.[{}]&quot;</span>, <span class='ident'>path</span>, <span class='ident'>inner_path</span>, <span class='ident'>i</span>);
+                                <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>new_path</span>);
+                                <span class='ident'>rc</span>.<span class='ident'>set_path</span>(<span class='ident'>new_path</span>);
+                            }
+                            <span class='comment'>// FIXME: context for literal</span>
+
                             <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>t</span>.<span class='ident'>render</span>(<span class='ident'>c</span>, <span class='ident'>r</span>, <span class='ident'>rc</span>));
                         }
                         <span class='prelude-val'>Ok</span>(())
                     }
-                    <span class='ident'>Json</span>::<span class='ident'>Object</span>(<span class='kw-2'>ref</span> <span class='ident'>obj</span>) <span class='op'>=&gt;</span> {
+                    <span class='kw-2'>&amp;</span><span class='ident'>Json</span>::<span class='ident'>Object</span>(<span class='kw-2'>ref</span> <span class='ident'>obj</span>) <span class='op'>=&gt;</span> {
                         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>first</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='boolvalue'>true</span>;
                         <span class='kw'>for</span> <span class='ident'>k</span> <span class='kw'>in</span> <span class='ident'>obj</span>.<span class='ident'>keys</span>() {
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@first&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>first</span>.<span class='ident'>to_json</span>());
@@ -323,8 +338,12 @@
                             }
 
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@key&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>k</span>.<span class='ident'>to_json</span>());
-                            <span class='kw'>let</span> <span class='ident'>new_path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.[{}]&quot;</span>, <span class='ident'>path</span>, <span class='ident'>param</span>, <span class='ident'>k</span>);
-                            <span class='ident'>rc</span>.<span class='ident'>set_path</span>(<span class='ident'>new_path</span>);
+
+                            <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>inner_path</span>) <span class='op'>=</span> <span class='ident'>value</span>.<span class='ident'>path</span>() {
+                                <span class='kw'>let</span> <span class='ident'>new_path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.[{}]&quot;</span>, <span class='ident'>path</span>, <span class='ident'>inner_path</span>, <span class='ident'>k</span>);
+                                <span class='ident'>rc</span>.<span class='ident'>set_path</span>(<span class='ident'>new_path</span>);
+                            }
+
                             <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>t</span>.<span class='ident'>render</span>(<span class='ident'>c</span>, <span class='ident'>r</span>, <span class='ident'>rc</span>));
                         }
 
@@ -349,7 +368,7 @@
             <span class='ident'>r</span>: <span class='kw-2'>&amp;</span><span class='ident'>Registry</span>,
             <span class='ident'>rc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>RenderContext</span>)
             <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>RenderError</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>param</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>param</span>(<span class='number'>0</span>)
+        <span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>param</span>(<span class='number'>0</span>)
                           .<span class='ident'>ok_or_else</span>(<span class='op'>||</span> <span class='ident'>RenderError</span>::<span class='ident'>new</span>(<span class='string'>&quot;Param not found for helper \&quot;each\&quot;&quot;</span>)));
 
         <span class='kw'>let</span> <span class='ident'>template</span> <span class='op'>=</span> <span class='ident'>h</span>.<span class='ident'>template</span>();
@@ -357,27 +376,28 @@
         <span class='kw'>match</span> <span class='ident'>template</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>t</span>) <span class='op'>=&gt;</span> {
                 <span class='kw'>let</span> <span class='ident'>path</span> <span class='op'>=</span> <span class='ident'>rc</span>.<span class='ident'>get_path</span>().<span class='ident'>clone</span>();
-                <span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>c</span>.<span class='ident'>navigate</span>(<span class='kw-2'>&amp;</span><span class='ident'>path</span>, <span class='ident'>param</span>);
 
                 <span class='ident'>rc</span>.<span class='ident'>promote_local_vars</span>();
 
-                <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>value</span>);
-                <span class='kw'>let</span> <span class='ident'>rendered</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='op'>*</span><span class='ident'>value</span> {
-                    <span class='ident'>Json</span>::<span class='ident'>Array</span>(<span class='kw-2'>ref</span> <span class='ident'>list</span>) <span class='op'>=&gt;</span> {
+                <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>value</span>.<span class='ident'>value</span>());
+                <span class='kw'>let</span> <span class='ident'>rendered</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>value</span>.<span class='ident'>value</span>() {
+                    <span class='kw-2'>&amp;</span><span class='ident'>Json</span>::<span class='ident'>Array</span>(<span class='kw-2'>ref</span> <span class='ident'>list</span>) <span class='op'>=&gt;</span> {
                         <span class='kw'>let</span> <span class='ident'>len</span> <span class='op'>=</span> <span class='ident'>list</span>.<span class='ident'>len</span>();
                         <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='number'>0</span>..<span class='ident'>len</span> {
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@first&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>value</span>::<span class='ident'>to_value</span>(<span class='kw-2'>&amp;</span>(<span class='ident'>i</span> <span class='op'>==</span> <span class='number'>0usize</span>)));
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@last&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>value</span>::<span class='ident'>to_value</span>(<span class='kw-2'>&amp;</span>(<span class='ident'>i</span> <span class='op'>==</span> <span class='ident'>len</span> <span class='op'>-</span> <span class='number'>1</span>)));
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@index&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>value</span>::<span class='ident'>to_value</span>(<span class='kw-2'>&amp;</span><span class='ident'>i</span>));
 
-                            <span class='kw'>let</span> <span class='ident'>new_path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.[{}]&quot;</span>, <span class='ident'>path</span>, <span class='ident'>param</span>, <span class='ident'>i</span>);
-                            <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>new_path</span>);
-                            <span class='ident'>rc</span>.<span class='ident'>set_path</span>(<span class='ident'>new_path</span>);
+                            <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>inner_path</span>) <span class='op'>=</span> <span class='ident'>value</span>.<span class='ident'>path</span>() {
+                                <span class='kw'>let</span> <span class='ident'>new_path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.[{}]&quot;</span>, <span class='ident'>path</span>, <span class='ident'>inner_path</span>, <span class='ident'>i</span>);
+                                <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>new_path</span>);
+                                <span class='ident'>rc</span>.<span class='ident'>set_path</span>(<span class='ident'>new_path</span>);
+                            }
                             <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>t</span>.<span class='ident'>render</span>(<span class='ident'>c</span>, <span class='ident'>r</span>, <span class='ident'>rc</span>));
                         }
                         <span class='prelude-val'>Ok</span>(())
                     }
-                    <span class='ident'>Json</span>::<span class='ident'>Object</span>(<span class='kw-2'>ref</span> <span class='ident'>obj</span>) <span class='op'>=&gt;</span> {
+                    <span class='kw-2'>&amp;</span><span class='ident'>Json</span>::<span class='ident'>Object</span>(<span class='kw-2'>ref</span> <span class='ident'>obj</span>) <span class='op'>=&gt;</span> {
                         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>first</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='boolvalue'>true</span>;
                         <span class='kw'>for</span> <span class='ident'>k</span> <span class='kw'>in</span> <span class='ident'>obj</span>.<span class='ident'>keys</span>() {
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@first&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>value</span>::<span class='ident'>to_value</span>(<span class='kw-2'>&amp;</span><span class='ident'>first</span>));
@@ -386,8 +406,12 @@
                             }
 
                             <span class='ident'>rc</span>.<span class='ident'>set_local_var</span>(<span class='string'>&quot;@key&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>value</span>::<span class='ident'>to_value</span>(<span class='kw-2'>&amp;</span><span class='ident'>k</span>));
-                            <span class='kw'>let</span> <span class='ident'>new_path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.[{}]&quot;</span>, <span class='ident'>path</span>, <span class='ident'>param</span>, <span class='ident'>k</span>);
-                            <span class='ident'>rc</span>.<span class='ident'>set_path</span>(<span class='ident'>new_path</span>);
+                            <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>inner_path</span>) <span class='op'>=</span> <span class='ident'>value</span>.<span class='ident'>path</span>() {
+                                <span class='kw'>let</span> <span class='ident'>new_path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.[{}]&quot;</span>, <span class='ident'>path</span>, <span class='ident'>inner_path</span>, <span class='ident'>k</span>);
+                                <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>new_path</span>);
+                                <span class='ident'>rc</span>.<span class='ident'>set_path</span>(<span class='ident'>new_path</span>);
+                            }
+
                             <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>t</span>.<span class='ident'>render</span>(<span class='ident'>c</span>, <span class='ident'>r</span>, <span class='ident'>rc</span>));
                         }
 
@@ -509,6 +533,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

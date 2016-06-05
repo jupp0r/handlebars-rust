@@ -47,12 +47,9 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-725' class='srclink' href='../src/handlebars/src/registry.rs.html#27' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-733' class='srclink' href='../src/handlebars/src/registry.rs.html#24' title='goto source code'>[src]</a></span></h1>
 <pre class='rust typedef'>type EscapeFn = <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a>&gt;;</pre><div class='docblock'><p>This type represents an <em>escape fn</em>, that is a function who&#39;s purpose it is
 to escape potentially problematic characters in a string.</p>
-
-<p>The default <em>escape fn</em> replaces the characters <code>&amp;&quot;&lt;&gt;</code>
-with the equivalent html / xml entities.</p>
 
 <p>An <em>escape fn</em> is represented as a <code>Box</code> to avoid unnecessary type
 parameters (and because traits cannot be aliased using <code>type</code>).</p>
@@ -79,6 +76,8 @@ parameters (and because traits cannot be aliased using <code>type</code>).</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
