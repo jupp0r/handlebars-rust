@@ -322,6 +322,11 @@
 <span id="278">278</span>
 <span id="279">279</span>
 <span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! # Handlebars</span>
 <span class='doccomment'>//! Handlebars is a modern and extensible templating solution originally created in the JavaScript world. It&#39;s used by many popular frameworks like [Ember.js](http://emberjs.com) and Chaplin. It&#39;s also ported to some other platforms such as [Java](https://github.com/jknack/handlebars.java).</span>
@@ -569,12 +574,17 @@
 <span class='doccomment'>//! * `{{log ...}}` log value with rust logger, default level: INFO. Currently you cannot change the level.</span>
 <span class='doccomment'>//!</span>
 
+
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>recursion_limit</span> <span class='op'>=</span> <span class='string'>&quot;200&quot;</span>]</span>
+
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>log</span>;
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>quick_error</span>;
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>lazy_static</span>;
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>pest</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>maplit</span>;
@@ -582,7 +592,6 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>)]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span> <span class='kw'>as</span> <span class='ident'>serialize</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>regex</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>itertools</span>;
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>serde</span>;
@@ -596,6 +605,7 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>helpers</span>::<span class='ident'>HelperDef</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>context</span>::{<span class='ident'>Context</span>, <span class='ident'>JsonRender</span>, <span class='ident'>JsonTruthy</span>};
 
+<span class='kw'>mod</span> <span class='ident'>grammar</span>;
 <span class='kw'>mod</span> <span class='ident'>template</span>;
 <span class='kw'>mod</span> <span class='ident'>error</span>;
 <span class='kw'>mod</span> <span class='ident'>registry</span>;
