@@ -317,6 +317,7 @@
 <span id="273">273</span>
 <span id="274">274</span>
 <span id="275">275</span>
+<span id="276">276</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>pest</span>::<span class='ident'>prelude</span>::<span class='op'>*</span>;
 
@@ -349,7 +350,7 @@
         <span class='ident'>path_char</span> <span class='op'>=</span> _{ [<span class='string'>&quot;/&quot;</span>] }
 
         <span class='ident'>identifier</span> <span class='op'>=</span> @{ <span class='ident'>symbol_char</span> ~ ( <span class='ident'>symbol_char</span> <span class='op'>|</span> <span class='ident'>path_char</span> )<span class='op'>*</span> }
-        <span class='ident'>reference</span> <span class='op'>=</span> @{ <span class='ident'>identifier</span> ~ ([<span class='string'>&quot;[&quot;</span>] ~ (<span class='ident'>string_literal</span><span class='op'>|</span>[<span class='string'>&#39;0&#39;</span>..<span class='string'>&#39;9&#39;</span>]<span class='op'>+</span>) ~ [<span class='string'>&quot;]&quot;</span>])<span class='op'>*</span> ~ <span class='ident'>reference</span><span class='op'>*</span> }
+        <span class='ident'>reference</span> <span class='op'>=</span> @{ <span class='ident'>identifier</span> ~ ([<span class='string'>&quot;[&quot;</span>] ~ (<span class='ident'>string_literal</span><span class='op'>|</span>[<span class='string'>&#39;0&#39;</span>..<span class='string'>&#39;9&#39;</span>]<span class='op'>+</span>) ~ [<span class='string'>&quot;]&quot;</span>])<span class='op'>*</span> ~ [<span class='string'>&quot;-&quot;</span>]<span class='op'>*</span> ~ <span class='ident'>reference</span><span class='op'>*</span> }
         <span class='ident'>name</span> <span class='op'>=</span> _{ <span class='ident'>subexpression</span> <span class='op'>|</span> <span class='ident'>identifier</span> }
 
         <span class='ident'>param</span> <span class='op'>=</span> { <span class='ident'>literal</span> <span class='op'>|</span> <span class='ident'>reference</span> <span class='op'>|</span> <span class='ident'>subexpression</span> }
@@ -425,7 +426,8 @@
                  <span class='string'>&quot;@abc&quot;</span>,
                  <span class='string'>&quot;a[\&quot;abc\&quot;]&quot;</span>,
                  <span class='string'>&quot;aBc[\&quot;abc\&quot;]&quot;</span>,
-                 <span class='string'>&quot;abc[0][\&quot;nice\&quot;]&quot;</span>];
+                 <span class='string'>&quot;abc[0][\&quot;nice\&quot;]&quot;</span>,
+                 <span class='string'>&quot;some-name&quot;</span>];
     <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>s</span>.<span class='ident'>iter</span>() {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rdp</span> <span class='op'>=</span> <span class='ident'>Rdp</span>::<span class='ident'>new</span>(<span class='ident'>StringInput</span>::<span class='ident'>new</span>(<span class='ident'>i</span>));
         <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>rdp</span>.<span class='ident'>reference</span>());
