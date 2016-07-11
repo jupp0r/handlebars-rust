@@ -809,6 +809,8 @@
 <span id="765">765</span>
 <span id="766">766</span>
 <span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>slice</span>::<span class='ident'>Iter</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>Peekable</span>;
@@ -817,7 +819,7 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::{<span class='ident'>BTreeMap</span>, <span class='ident'>VecDeque</span>};
 <span class='kw'>use</span> <span class='ident'>pest</span>::<span class='ident'>prelude</span>::<span class='op'>*</span>;
 
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>)]</span>
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>, <span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)))]</span>
 <span class='kw'>use</span> <span class='ident'>serialize</span>::<span class='ident'>json</span>::<span class='ident'>Json</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>serde_json</span>::<span class='ident'>value</span>::<span class='ident'>Value</span> <span class='kw'>as</span> <span class='ident'>Json</span>;
@@ -1144,7 +1146,8 @@
                         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>t</span> <span class='op'>=</span> <span class='ident'>template_stack</span>.<span class='ident'>front_mut</span>().<span class='ident'>unwrap</span>();
                         <span class='ident'>t</span>.<span class='ident'>push_element</span>(<span class='ident'>RawString</span>(<span class='ident'>text</span>.<span class='ident'>to_owned</span>()), <span class='ident'>line_no</span>, <span class='ident'>col_no</span>);
                     }
-                    <span class='ident'>Rule</span>::<span class='ident'>helper_block_start</span> <span class='op'>|</span> <span class='ident'>Rule</span>::<span class='ident'>raw_block_start</span> <span class='op'>=&gt;</span> {
+                    <span class='ident'>Rule</span>::<span class='ident'>helper_block_start</span> <span class='op'>|</span>
+                    <span class='ident'>Rule</span>::<span class='ident'>raw_block_start</span> <span class='op'>=&gt;</span> {
                         <span class='kw'>let</span> <span class='ident'>exp</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>Template</span>::<span class='ident'>parse_expression</span>(<span class='ident'>source</span>, <span class='ident'>it</span>.<span class='ident'>by_ref</span>(), <span class='ident'>token</span>.<span class='ident'>end</span>));
                         <span class='kw'>let</span> <span class='ident'>helper_template</span> <span class='op'>=</span> <span class='ident'>HelperTemplate</span> {
                             <span class='ident'>name</span>: <span class='ident'>exp</span>.<span class='ident'>name</span>.<span class='ident'>as_name</span>().<span class='ident'>unwrap</span>(),
@@ -1187,7 +1190,8 @@
                         <span class='ident'>t</span>.<span class='ident'>push_element</span>(<span class='ident'>RawString</span>(<span class='ident'>text</span>.<span class='ident'>to_owned</span>()), <span class='ident'>line_no</span>, <span class='ident'>col_no</span>);
                         <span class='ident'>template_stack</span>.<span class='ident'>push_front</span>(<span class='ident'>t</span>);
                     }
-                    <span class='ident'>Rule</span>::<span class='ident'>helper_block_end</span> <span class='op'>|</span> <span class='ident'>Rule</span>::<span class='ident'>raw_block_end</span> <span class='op'>=&gt;</span> {
+                    <span class='ident'>Rule</span>::<span class='ident'>helper_block_end</span> <span class='op'>|</span>
+                    <span class='ident'>Rule</span>::<span class='ident'>raw_block_end</span> <span class='op'>=&gt;</span> {
                         <span class='kw'>let</span> <span class='ident'>exp</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>Template</span>::<span class='ident'>parse_expression</span>(<span class='ident'>source</span>, <span class='ident'>it</span>.<span class='ident'>by_ref</span>(), <span class='ident'>token</span>.<span class='ident'>end</span>));
 
                         <span class='kw'>if</span> <span class='ident'>exp</span>.<span class='ident'>omit_pre_ws</span> {
@@ -1520,7 +1524,7 @@
 }
 
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>rust_ser_type</span>)]</span>
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>, <span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)))]</span>
 <span class='kw'>fn</span> <span class='ident'>test_literal_parameter_parser</span>() {
     <span class='kw'>match</span> <span class='ident'>Template</span>::<span class='ident'>compile</span>(<span class='string'>&quot;{{hello 1 name=\&quot;value\&quot; valid=false ref=someref}}&quot;</span>) {
         <span class='prelude-val'>Ok</span>(<span class='ident'>t</span>) <span class='op'>=&gt;</span> {

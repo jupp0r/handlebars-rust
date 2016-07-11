@@ -218,7 +218,7 @@
 <span class='kw'>pub</span> <span class='kw'>static</span> <span class='ident'>WITH_HELPER</span>: <span class='ident'>WithHelper</span> <span class='op'>=</span> <span class='ident'>WithHelper</span>;
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>)]</span>
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>, <span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)))]</span>
 <span class='kw'>mod</span> <span class='ident'>test</span> {
     <span class='kw'>use</span> <span class='ident'>template</span>::<span class='ident'>Template</span>;
     <span class='kw'>use</span> <span class='ident'>registry</span>::<span class='ident'>Registry</span>;
