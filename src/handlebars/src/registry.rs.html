@@ -498,10 +498,10 @@
     }
 
     <span class='doccomment'>/// Register a template from a path</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>register_template_file</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>,
-                                  <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
-                                  <span class='ident'>tpl_path</span>: <span class='kw-2'>&amp;</span><span class='ident'>Path</span>)
-                                  <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>TemplateFileError</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>register_template_file</span><span class='op'>&lt;</span><span class='ident'>P</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>Path</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>,
+                                                  <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
+                                                  <span class='ident'>tpl_path</span>: <span class='ident'>P</span>)
+                                                  <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>TemplateFileError</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>file</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>File</span>::<span class='ident'>open</span>(<span class='ident'>tpl_path</span>));
         <span class='self'>self</span>.<span class='ident'>register_template_source</span>(<span class='ident'>name</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>file</span>)
     }

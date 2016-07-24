@@ -495,6 +495,16 @@
 <span id="451">451</span>
 <span id="452">452</span>
 <span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
 </pre><pre class='rust '>
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>, <span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)))]</span>
 <span class='kw'>use</span> <span class='ident'>serialize</span>::<span class='ident'>json</span>::{<span class='ident'>Json</span>, <span class='ident'>ToJson</span>};
@@ -534,9 +544,7 @@
             }
             _ <span class='op'>=&gt;</span> {
                 <span class='kw'>for</span> <span class='ident'>dot_p</span> <span class='kw'>in</span> <span class='ident'>p</span>.<span class='ident'>split</span>(<span class='string'>&#39;.&#39;</span>) {
-                    <span class='comment'>// if dot_p != &quot;this&quot; {</span>
                     <span class='ident'>path_stack</span>.<span class='ident'>push_back</span>(<span class='ident'>dot_p</span>);
-                    <span class='comment'>// }</span>
                 }
             }
         }
@@ -786,6 +794,12 @@
                    <span class='string'>&quot;programmer&quot;</span>.<span class='ident'>to_string</span>());
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>ctx</span>.<span class='ident'>navigate</span>(<span class='string'>&quot;.&quot;</span>, <span class='string'>&quot;titles.[0]&quot;</span>).<span class='ident'>render</span>(),
                    <span class='string'>&quot;programmer&quot;</span>.<span class='ident'>to_string</span>());
+
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>ctx</span>.<span class='ident'>navigate</span>(<span class='string'>&quot;.&quot;</span>, <span class='string'>&quot;titles[0]/../age&quot;</span>).<span class='ident'>render</span>(),
+                   <span class='string'>&quot;27&quot;</span>.<span class='ident'>to_string</span>());
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>ctx</span>.<span class='ident'>navigate</span>(<span class='string'>&quot;.&quot;</span>, <span class='string'>&quot;this.titles[0]/../age&quot;</span>).<span class='ident'>render</span>(),
+                   <span class='string'>&quot;27&quot;</span>.<span class='ident'>to_string</span>());
+
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -911,6 +925,12 @@
                    <span class='string'>&quot;programmer&quot;</span>.<span class='ident'>to_string</span>());
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>ctx</span>.<span class='ident'>navigate</span>(<span class='string'>&quot;.&quot;</span>, <span class='string'>&quot;titles.[0]&quot;</span>).<span class='ident'>render</span>(),
                    <span class='string'>&quot;programmer&quot;</span>.<span class='ident'>to_string</span>());
+
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>ctx</span>.<span class='ident'>navigate</span>(<span class='string'>&quot;.&quot;</span>, <span class='string'>&quot;titles[0]/../age&quot;</span>).<span class='ident'>render</span>(),
+                   <span class='string'>&quot;27&quot;</span>.<span class='ident'>to_string</span>());
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>ctx</span>.<span class='ident'>navigate</span>(<span class='string'>&quot;.&quot;</span>, <span class='string'>&quot;this.titles[0]/../age&quot;</span>).<span class='ident'>render</span>(),
+                   <span class='string'>&quot;27&quot;</span>.<span class='ident'>to_string</span>());
+
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
