@@ -302,6 +302,30 @@
 <span id="258">258</span>
 <span id="259">259</span>
 <span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
 </pre><pre class='rust '>
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>, <span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)))]</span>
 <span class='kw'>use</span> <span class='ident'>serialize</span>::<span class='ident'>json</span>::{<span class='ident'>Json</span>, <span class='ident'>ToJson</span>};
@@ -336,7 +360,8 @@
 
                 <span class='ident'>rc</span>.<span class='ident'>promote_local_vars</span>();
                 <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>path_root</span>) <span class='op'>=</span> <span class='ident'>value</span>.<span class='ident'>path_root</span>() {
-                    <span class='ident'>rc</span>.<span class='ident'>set_local_path_root</span>(<span class='ident'>path_root</span>.<span class='ident'>to_owned</span>());
+                    <span class='kw'>let</span> <span class='ident'>local_path_root</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}&quot;</span>, <span class='ident'>path</span>, <span class='ident'>path_root</span>);
+                    <span class='ident'>rc</span>.<span class='ident'>set_local_path_root</span>(<span class='ident'>local_path_root</span>);
                 }
 
                 <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>value</span>.<span class='ident'>value</span>());
@@ -406,6 +431,10 @@
                 <span class='kw'>let</span> <span class='ident'>path</span> <span class='op'>=</span> <span class='ident'>rc</span>.<span class='ident'>get_path</span>().<span class='ident'>clone</span>();
 
                 <span class='ident'>rc</span>.<span class='ident'>promote_local_vars</span>();
+                <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>path_root</span>) <span class='op'>=</span> <span class='ident'>value</span>.<span class='ident'>path_root</span>() {
+                    <span class='kw'>let</span> <span class='ident'>local_path_root</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}&quot;</span>, <span class='ident'>path</span>, <span class='ident'>path_root</span>);
+                    <span class='ident'>rc</span>.<span class='ident'>set_local_path_root</span>(<span class='ident'>local_path_root</span>);
+                }
 
                 <span class='macro'>debug</span><span class='macro'>!</span>(<span class='string'>&quot;each value {:?}&quot;</span>, <span class='ident'>value</span>.<span class='ident'>value</span>());
                 <span class='kw'>let</span> <span class='ident'>rendered</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>value</span>.<span class='ident'>value</span>() {
@@ -518,6 +547,25 @@
 
         <span class='kw'>let</span> <span class='ident'>r1</span> <span class='op'>=</span> <span class='ident'>handlebars</span>.<span class='ident'>render</span>(<span class='string'>&quot;t0&quot;</span>, <span class='kw-2'>&amp;</span><span class='ident'>data</span>);
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>r1</span>.<span class='ident'>ok</span>().<span class='ident'>unwrap</span>(), <span class='string'>&quot; d=100 b=99  d=200 b=99 &quot;</span>.<span class='ident'>to_string</span>());
+    }
+
+    <span class='attribute'>#[<span class='ident'>test</span>]</span>
+    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>, <span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)))]</span>
+    <span class='kw'>fn</span> <span class='ident'>test_nested_each_with_parent</span>() {
+
+        <span class='kw'>let</span> <span class='ident'>json_str</span> <span class='op'>=</span> <span class='string'>r#&quot;{&quot;a&quot;: [{&quot;b&quot;: [{&quot;d&quot;: 100}], &quot;c&quot;: 200}]}&quot;#</span>;
+
+        <span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='ident'>Json</span>::<span class='ident'>from_str</span>(<span class='ident'>json_str</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>t0</span> <span class='op'>=</span> <span class='ident'>Template</span>::<span class='ident'>compile</span>(<span class='string'>&quot;{{#each a}}{{#each b}}{{d}}:{{../c}}{{/each}}{{/each}}&quot;</span>
+                                       .<span class='ident'>to_string</span>())
+                     .<span class='ident'>ok</span>()
+                     .<span class='ident'>unwrap</span>();
+
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>handlebars</span> <span class='op'>=</span> <span class='ident'>Registry</span>::<span class='ident'>new</span>();
+        <span class='ident'>handlebars</span>.<span class='ident'>register_template</span>(<span class='string'>&quot;t0&quot;</span>, <span class='ident'>t0</span>);
+
+        <span class='kw'>let</span> <span class='ident'>r1</span> <span class='op'>=</span> <span class='ident'>handlebars</span>.<span class='ident'>render</span>(<span class='string'>&quot;t0&quot;</span>, <span class='kw-2'>&amp;</span><span class='ident'>data</span>);
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>r1</span>.<span class='ident'>ok</span>().<span class='ident'>unwrap</span>(), <span class='string'>&quot;100:200&quot;</span>.<span class='ident'>to_string</span>());
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
