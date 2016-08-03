@@ -138,6 +138,7 @@
 <span id="94">94</span>
 <span id="95">95</span>
 <span id="96">96</span>
+<span id="97">97</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>helpers</span>::<span class='ident'>HelperDef</span>;
 <span class='kw'>use</span> <span class='ident'>registry</span>::<span class='ident'>Registry</span>;
@@ -186,6 +187,7 @@
     <span class='kw'>use</span> <span class='ident'>registry</span>::<span class='ident'>Registry</span>;
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>, <span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)))]</span>
     <span class='kw'>use</span> <span class='ident'>serialize</span>::<span class='ident'>json</span>::<span class='ident'>Json</span>;
+    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_ser_type&quot;</span>, <span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde_type&quot;</span>)))]</span>
     <span class='kw'>use</span> <span class='ident'>helpers</span>::<span class='ident'>WITH_HELPER</span>;
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
